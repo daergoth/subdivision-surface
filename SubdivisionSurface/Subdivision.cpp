@@ -3,14 +3,14 @@
 std::vector<Vertex> Subdivision::vertices = std::vector<Vertex>();
 std::vector<Face> Subdivision::faces = std::vector<Face>();
 std::vector<HalfEdge> Subdivision::halfEdges = std::vector<HalfEdge>();
-std::vector<Normal> Subdivision::normals = std::vector<Normal>();
+//std::vector<Normal> Subdivision::normals = std::vector<Normal>();
 
 std::vector<Vertex> Subdivision::new_vertices = std::vector<Vertex>();
 std::vector<Face> Subdivision::new_faces = std::vector<Face>();
 std::vector<HalfEdge> Subdivision::new_halfEdges = std::vector<HalfEdge>();
 std::vector<GLint> Subdivision::edgeMap = std::vector<GLint>();
 
-Camera cam = Camera(Vector4(0,0,10), Vector4(0,1,0), Vector4(10, 10, 10), 10, 6.0);
+Camera cam = Camera(Vector4(0,0,10), Vector4(0,1,0), Vector4(100, 100, 100), 10, 6.0);
 
 void init () {
 	glClearColor( 1.0, 1.0, 1.0, 0.0 );
@@ -262,7 +262,7 @@ void keyPressed(GLFWwindow * windows, GLint key, GLint scanCode, GLint action, G
 		switch (key) {
 		case GLFW_KEY_LEFT:
 			//std::cerr << "move left" << std::endl;
-			cam.move(-(Subdivision::DELTA_ANGLE * (Camera::PI/180)), 0, 0);
+			cam.move(Subdivision::DELTA_ANGLE * (Camera::PI/180), 0, 0);
 			break;
 		case GLFW_KEY_UP:
 			//std::cerr << "move up" << std::endl;
@@ -274,7 +274,7 @@ void keyPressed(GLFWwindow * windows, GLint key, GLint scanCode, GLint action, G
 			break;
 		case GLFW_KEY_RIGHT:
 			//std::cerr << "move right" << std::endl;
-			cam.move(Subdivision::DELTA_ANGLE * (Camera::PI/180), 0, 0);
+			cam.move(-Subdivision::DELTA_ANGLE * (Camera::PI/180), 0, 0);
 			break;
 		case GLFW_KEY_KP_ADD:
 			//std::cerr << "move in" << std::endl;
@@ -294,6 +294,27 @@ void keyPressed(GLFWwindow * windows, GLint key, GLint scanCode, GLint action, G
 			break;
 		case GLFW_KEY_F:
 			Camera::wireframeEnabled = !Camera::wireframeEnabled;
+			break;
+		case GLFW_KEY_L:
+			std::string filename;
+			std::cout << "File's name to open: " << std::endl;
+			std::cin >> filename;
+
+			if (ObjLoader::loadFile(filename)) {
+				Subdivision::vertices.clear();
+				Subdivision::vertices = std::move(ObjLoader::getVertices());
+				
+				Subdivision::halfEdges.clear();
+				Subdivision::halfEdges = std::move(ObjLoader::getHalfEdges());
+
+				Subdivision::faces.clear();
+				Subdivision::faces = std::move(ObjLoader::getFaces());
+			}
+			else {
+				std::cerr << "Problem occured during loading!" << std::endl;
+			}
+
+
 			break;
 		}
 	}

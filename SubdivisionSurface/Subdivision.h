@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Matrix4.h"
 #include "HalfEdge.h"
+#include "ObjLoader.h"
 
 class Subdivision {
 public:
@@ -16,7 +17,7 @@ public:
 	static std::vector<Vertex> vertices;
 	static std::vector<Face> faces;
 	static std::vector<HalfEdge> halfEdges;
-	static std::vector<Normal> normals;
+	//static std::vector<Normal> normals;
 
 	static void createObject();
 	static void subdivision();

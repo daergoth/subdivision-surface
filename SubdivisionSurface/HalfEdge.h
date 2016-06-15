@@ -14,7 +14,3 @@ struct Face {
 struct HalfEdge {
 	GLint pair;
 };
-
-struct Normal {
-	Vector4* vector;
-};
